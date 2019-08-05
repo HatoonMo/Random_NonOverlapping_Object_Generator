@@ -1,0 +1,94 @@
+<html>
+<head>
+<title> Random Object Generator </title>
+  <meta name="viewport" content="width=device-width, user-scalable=no" />
+  <style>
+    canvas {
+      border: 1px solid black;
+      width: 100%;
+       
+    }
+  </style>
+</head>
+<body>
+  <h1>Random Object Generator</h1>
+  <canvas id="mycanvas" width="600" height="200" ></canvas>
+  <script>
+            //constants
+      var GAME_WIDTH = 600;
+      var GAME_HEIGHT = 200;
+    //dimensions of the rectangle
+    var x = 0;
+    var y = 0;
+    var w = 5;
+    var h = 5;
+      var n=5; //number of objects
+      var j=0;
+      // x List
+      var xList=[];
+      var yList=[];
+var overlapping=false;
+
+
+    //grab the canvas and context
+    var canvas = document.getElementById("mycanvas");
+    var ctx = canvas.getContext("2d");
+
+
+
+    //show it on the screen
+    var draw = function() {
+      //ctx.clearRect(0,0,300,300);
+      ctx.fillStyle = "rgb(200, 0, 100)";
+      
+      while(j<n){
+        var tempX=Math.random()* (+GAME_WIDTH - +0) + +0;   
+          var tempY=Math.random()* (+GAME_HEIGHT - +0) + +0; 
+          console.log('temp x=' +tempX);
+          console.log('temp y=' +tempY);
+          if(j==0){
+              xList.push(tempX);
+              yList.push(tempY);
+              j++;
+              console.log("x, y appended");
+          }else{
+              for(var i=0;i<xList.length;i++){
+                  if(dist(xList[i],tempX,yList[i],tempY)<w*2){
+                      console.log(dist(xList[i],tempX,yList[i],tempY));
+                  //if(Math.sqrt(Math.hypot(xList[i],tempX))<w*2){
+                      overlapping=true;
+                      break;
+                  }
+              }
+              if(!overlapping){
+                             xList.push(tempX);
+              yList.push(tempY);
+              console.log("x, y appended");
+                  j++;
+              }
+
+          }
+
+      }    
+        //draw objects
+          for(var i=0;i<xList.length;i++){
+              ctx.fillRect(xList[i], yList[i], w, h);
+          }
+    };
+         var dist = function(x,tempX,y,tempY) {
+            
+             
+             return Math.sqrt(Math.pow(Math.abs(x)-Math.abs(tempX)) + Math.pow(Math.abs(y) - Math.abs(tempY)));
+         };
+          //gets executed multiple times per second
+    var step = function() {
+
+     // update();
+      draw();
+
+      window.requestAnimationFrame(step);
+    };
+      step();
+        </script>
+</body>
+</html>
